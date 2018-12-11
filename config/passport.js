@@ -2,7 +2,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 
 var bcrypt = require('bcrypt-nodejs');
-var model = require("../models/users");
+var model = require("../model/users");
 
 // Telling passport we want to use a Local Strategy. In other words, we want login with a username/email and password
 passport.use(
