@@ -15,4 +15,4 @@ var user = {
 };
 
 // Export the database functions for the controller (catsController.js).
-//module.exports = user;
+module.exports = user;
