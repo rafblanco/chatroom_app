@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <title>Chat Room App</title>
+</head>
+
+<body class="container p-4">
+    <div class="mb-4">
+        <h1 class="display-4 mx-auto">Welcome to Chat App</h1>
+    </div>
+    <div id="chat-rooms" class="row p-0 mb-4">
+        <!--Chat 1 is 'active'-->
+        <button type="button" class="col btn btn-outline-primary btn-lg">Chat 1</button>
+        <button type="button" class="col btn btn-outline-primary btn-lg">Chat 2</button>
+        <button type="button" class="col btn btn-outline-primary btn-lg">Chat 3</button>
+        <button type="button" class="col btn btn-outline-primary btn-lg">Chat 4</button>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 card mb-2 p-2">
+            <img class="card-img-top" src="./background.jpeg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Info for <span class="font-weight-bold">Person Senior</span></h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <div id="messages" class="col-sm-8 p-4 border mb-2">
+            <!-- new messages created will have class name 'messages' -->
+            <div class="messages alert alert-primary">1111</div>
+            <div class="messages alert alert-secondary">2222</div>
+            <div class="messages alert alert-primary">3333</div>
+        </div>
+    </div>
+    <form action="" class="row p-2 border border-secondary">
+        <div>
+            <input id="m" autocomplete="off" />
+            <button type="button" class="btn btn-primary">Send</button>
+        </div>
+    </form>
+</body>
+
+</html>
