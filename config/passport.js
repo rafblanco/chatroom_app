@@ -81,4 +81,4 @@ passport.deserializeUser(function (id, done) {
 });
 
 // Exporting our configured passport
-//module.exports = passport;
+module.exports = passport;
