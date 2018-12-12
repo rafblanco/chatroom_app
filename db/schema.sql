@@ -9,7 +9,7 @@ CREATE TABLE users
     PRIMARY KEY(user_name)
 );
 
-CREATE TABLE messages
+CREATE TABLE chats
 (
     id int NOT NULL AUTO_INCREMENT,
     message varchar(280) NOT NULL,
