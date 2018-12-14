@@ -16,11 +16,12 @@ router.get("/", function (req, res) {
 });
 
 router.post("/api/chat", function (req, res) {
+    console.log("Hit chatt successfully")
     chat.createMessage([
-        "name", "message"
+        "user", "message"
     ],
         [
-            req.body.name, req.body.message
+            req.body.user, req.body.message
         ],
         function (result) {
             res.json({id: result.insertId}); 
