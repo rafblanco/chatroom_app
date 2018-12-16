@@ -1,7 +1,34 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel" style="text-align:center">Please Pick a User to Login</h5>
+            </div>
+            <p class="mx-auto">
+                {{#each user }}
+                <a href="#" role="button" class="p-1 btn btn-secondary user-chosen" title="title" data-id="{{user_name}}"
+                    data-dismiss="modal">{{user_name}} </a>
+                {{/each}}
+            </p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 1. Header -->
 <div class="container p-1">
     <div class="p-0 mb-4">
         <h1 class="display-4 mx-auto">Welcome to Chat App</h1>
+    </div>
+    <!-- Logins -->
+    <div id="all-users">
+        <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
+        <button type="button" class="col btn btn-primary">Meili</button>
+        <button type="button" class="col btn btn-primary">Jake</button>
+        <button type="button" class="col btn btn-primary">Alejandro</button>
     </div>
     <!-- 2.Chat Room buttoms -->
     <div id="chat-rooms" class="row p-0 mb-4">
@@ -17,23 +44,23 @@
         <div class="col-sm-4 card mb-2 p-2">
             <img class="card-img-top" src="./background.jpeg" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">Info for <span class="font-weight-bold">Person Senior</span></h5>
+                <h5 class="card-title">Info for <span id="logged-in" class="font-weight-bold">Person Senior</span></h5>
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
                     card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="#" id="log-out" data-user="" class="btn btn-primary">Logout</a>
             </div>
         </div>
         <!-- Messages (right) -->
         <div id="messages" class="col-sm-8 p-4 border mb-2">
             <!-- new messages created will have class name 'messages' -->
             {{#each messages }}
-            <div class="messages alert alert-primary" data-user={{user}} data-id="{{id}}">{{user}}: {{message}}</div>
+            <div class="messages alert alert-primary" data-user={{user}} data-id="{{id}}">{{user}}: <div class="text" data-id="{{id}}">
+                    {{message}}</div><button data-id="{{id}}" type="button" class="delete close">&times;</button>
+                    <span data-id="{{id}}" type="button" class="edit border">edit</span>
+                    <span data-id="{{id}}" type="button" class="save border">save</span>
+                
+            </div>
             {{/each}}
-            <div class="messages alert alert-secondary">2222</div>
-            <div class="messages alert alert-primary">3333</div>
-            <div class="messages alert alert-secondary">2222</div>
-            <div class="messages alert alert-primary">3333</div>
-
         </div>
     </div>
 </div>
