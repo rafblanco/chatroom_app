@@ -4,17 +4,17 @@ $(document).ready(function () {
   // Run Modal 
   $.ajax("/allusers", {
     type: "GET"
-  }). then(function(response){    
-    for (var i=0; i < response.users.length; i++) {
-    // console.log(i)
-    var eachUser = response.users[i].user_name;
-    console.log(eachUser)
-    var newDiv = $('<button type="button" class="col btn btn-primary user"></button>');
-    // <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
-    newDiv.attr('data-id',eachUser)
-    newDiv.text(eachUser)
-    // console.log(newDiv)
-    $('#all-users').append(newDiv)
+  }).then(function (response) {
+    for (var i = 0; i < response.users.length; i++) {
+      // console.log(i)
+      var eachUser = response.users[i].user_name;
+      console.log(eachUser)
+      var newDiv = $('<button type="button" class="col btn btn-primary user-chosen"></button>');
+      // <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
+      newDiv.attr('data-id', eachUser)
+      newDiv.text(eachUser)
+      // console.log(newDiv)
+      $('#all-users').append(newDiv)
     }
 
     changeUser();
@@ -33,34 +33,38 @@ $(document).ready(function () {
   // });
 
   $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
+
   var changeUser = function () {
-  $('.user-chosen').on('click', function () {
-    var chosenUser = $(this).data('id');
-    console.log(chosenUser)
-    $("log-out").data(chosenUser);
+    $('.user-chosen').on('click', function () {
+      var chosenUser = $(this).data('id');
+      console.log(chosenUser)
+      $("log-out").data(chosenUser);
 
-    $.ajax("/api/chat", {
-      type: "POST"
-    }). then(function(response){
-      console.log(response);
-      location.reload()
+      // $.ajax("/api/chat", {
+      //   type: "POST"
+      // }).then(function (response) {
+      //   console.log(response);
+      //   location.reload()
+      // });
+
+      changeLoginName();
     });
-  });
-}
+  }
+  var changeLoginName = function () {
+    $('.user-chosen').on('click', function () {
+      var chosenUser = $(this).data('id');
+      console.log(chosenUser)
 
-  $('.user').on('click', function () {
-    var chosenUser = $(this).data('id');
-    console.log(chosenUser)
+      $('#logged-in').html(chosenUser);
 
-    $('#logged-in').html(chosenUser);
-
-    // $.ajax("/api/chat", {
-    //   type: "POST"
-    // }). then(function(response){
-    //   console.log(response);
-    //   location.reload()
-    // });
-  });
+      // $.ajax("/api/chat", {
+      //   type: "POST"
+      // }). then(function(response){
+      //   console.log(response);
+      //   location.reload()
+      // });
+    })
+  };
 
   // $('#submit').keypress(function (e) {
 
@@ -69,14 +73,14 @@ $(document).ready(function () {
   //     console.log("Pressed ENTER")
   //   }
   // });
-  $('.edit').click(function(){
+  $('.edit').click(function () {
     $(this).hide();
     $('.messages').addClass('editable');
-    $('.text').attr('contenteditable', 'true');  
+    $('.text').attr('contenteditable', 'true');
     $('.save').show();
   });
-  
-  $('.save').click(function(){
+
+  $('.save').click(function () {
     $(this).hide();
     $('.messages').removeClass('editable');
     $('.text').removeAttr('contenteditable');
@@ -130,7 +134,7 @@ $(document).ready(function () {
   $(".save").on("click", function (event) {
     var id = $(this).parent().data("id");
     console.log(id)
-    
+
     var messages = $(this).text()
 
     $.ajax("api/chat/" + id, {
