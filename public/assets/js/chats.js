@@ -132,14 +132,16 @@ $(document).ready(function () {
 
 
   $(".save").on("click", function (event) {
-    var id = $(this).parent().data("id");
-    console.log(id)
-
-    var messages = $(this).text()
+    var id = $(this).parent().data("id")
+    var updateMsg = $(this).siblings("div").text()
+    
+    var newMsg = {
+      message: updateMsg
+    };
 
     $.ajax("api/chat/" + id, {
       type: "PUT",
-      data: messages
+      data: newMsg
     }).then(
       function () {
         console.log("update chat", id);
@@ -165,15 +167,22 @@ $(document).ready(function () {
   // };
 
   function poll() {
-    setTimeout(function () {
+    setInterval(function () {
       $.ajax({
         url: "http://localhost:8080/", type: "GET", success: function (data) {
           //Setup the next poll recursively
-          poll();
-
           console.log("IM POLLING")
 
-        }, dataType: "json"
+          console.log("IM POLLING 2")
+          
+          $("#messages").replaceWith($(data).find("#messages"))
+
+          var messages = $("#messages")[0];
+          messages.scrollTop = messages.scrollHeight - messages.clientHeight;
+        }, error: function (xhr,status, error) {
+          console.log(status)
+          console.log(error)
+        }
       });
     }, 5000);
   };
