@@ -4,16 +4,15 @@ var LocalStrategy = require("passport-local").Strategy;
 var bcrypt = require('bcrypt-nodejs');
 var model = require("../model/users");
 
-// Telling passport we want to use a Local Strategy. In other words, we want login with a username/email and password
+// Telling passport we want to use a Local Strategy. In other words, we want login with a username and password
 passport.use(
   'local-login',
   new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
-    function (req, username, password, done) { // callback with email and password from our form
+    function (req, username, password, done) { // callback with username and password from our form
       model.selectWhere("username", username, function (err, rows) {
         if (err)
           return done(err);
@@ -34,13 +33,12 @@ passport.use(
 passport.use(
   'local-signup',
   new LocalStrategy({
-    // by default, local strategy uses username and password, we will override with email
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
     function (req, username, password, done) {
-      // find a user whose email is the same as the forms email
+      // find a user whose username is the same as the forms username
       // we are checking to see if the user trying to login already exists
       model.selectWhere("username", username, function (err, rows) {
         if (err)
@@ -55,7 +53,7 @@ passport.use(
             password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
           };
 
-          model.create({ 'username': newUser.username, 'password': newUser.password }, function (err, rows) {
+          model.createUser({ 'username': newUser.username, 'password': newUser.password }, function (err, rows) {
             newUser.id = rows.insertId;
 
             return done(null, newUser);

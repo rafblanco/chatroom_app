@@ -2,26 +2,26 @@ console.log('chats.js connected.')
 
 $(document).ready(function () {
   // Run Modal 
-  $.ajax("/allusers", {
-    type: "GET"
-  }).then(function (response) {
-    for (var i = 0; i < response.users.length; i++) {
-      // console.log(i)
-      var eachUser = response.users[i].user_name;
-      console.log(eachUser)
-      var newDiv = $('<button type="button" class="col btn btn-primary user-chosen"></button>');
-      // <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
-      newDiv.attr('data-id', eachUser)
-      newDiv.text(eachUser)
-      // console.log(newDiv)
-      $('#all-users').append(newDiv)
-    }
+  // $.ajax("/allusers", {
+  //   type: "GET"
+  // }).then(function (response) {
+  //   for (var i = 0; i < response.users.length; i++) {
+  //     // console.log(i)
+  //     var eachUser = response.users[i].user_name;
+  //     console.log(eachUser)
+  //     var newDiv = $('<button type="button" class="col btn btn-primary user-chosen"></button>');
+  //     // <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
+  //     newDiv.attr('data-id', eachUser)
+  //     newDiv.text(eachUser)
+  //     // console.log(newDiv)
+  //     $('#all-users').append(newDiv)
+  //   }
 
-    changeUser();
-  });
+  //   changeUser();
+  // });
 
-  var runModal = 'run';
-  console.log('initial: ' + runModal);
+  // var runModal = 'run';
+  // console.log('initial: ' + runModal);
 
   // $(window).on('load', function () {
   //   console.log('Connected to Webpage.')
@@ -32,39 +32,39 @@ $(document).ready(function () {
   //   }
   // });
 
-  $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
 
-  var changeUser = function () {
-    $('.user-chosen').on('click', function () {
-      var chosenUser = $(this).data('id');
-      console.log(chosenUser)
-      $("log-out").data(chosenUser);
 
-      // $.ajax("/api/chat", {
-      //   type: "POST"
-      // }).then(function (response) {
-      //   console.log(response);
-      //   location.reload()
-      // });
+  // var changeUser = function () {
+  //   $('.user-chosen').on('click', function () {
+  //     var chosenUser = $(this).data('id');
+  //     console.log(chosenUser)
+  //     $("log-out").data(chosenUser);
 
-      changeLoginName();
-    });
-  }
-  var changeLoginName = function () {
-    $('.user-chosen').on('click', function () {
-      var chosenUser = $(this).data('id');
-      console.log(chosenUser)
+  //     // $.ajax("/api/chat", {
+  //     //   type: "POST"
+  //     // }).then(function (response) {
+  //     //   console.log(response);
+  //     //   location.reload()
+  //     // });
 
-      $('#logged-in').html(chosenUser);
+  //     changeLoginName();
+  //   });
+  // }
+  // var changeLoginName = function () {
+  //   $('.user-chosen').on('click', function () {
+  //     var chosenUser = $(this).data('id');
+  //     console.log(chosenUser)
 
-      // $.ajax("/api/chat", {
-      //   type: "POST"
-      // }). then(function(response){
-      //   console.log(response);
-      //   location.reload()
-      // });
-    })
-  };
+  //     $('#logged-in').html(chosenUser);
+
+  //     // $.ajax("/api/chat", {
+  //     //   type: "POST"
+  //     // }). then(function(response){
+  //     //   console.log(response);
+  //     //   location.reload()
+  //     // });
+  //   })
+  // };
 
   // $('#submit').keypress(function (e) {
 
@@ -73,6 +73,14 @@ $(document).ready(function () {
   //     console.log("Pressed ENTER")
   //   }
   // });
+
+  $.get("/api/user_data").then(function (data) {
+    //Move the username class in index to a better spot 
+    $(".user-name").text(data.username);
+  });
+
+  $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
+
   $('.edit').click(function () {
     $(this).hide();
     $('.messages').addClass('editable');
@@ -87,20 +95,17 @@ $(document).ready(function () {
     $('.edit').show();
   });
 
-
+  // AJAX calls that posts messages
   $('#submit').on('click', function () {
     event.preventDefault();
-    var id = $(this).data("id");
 
-    console.log('Hello')
-    var userName = $("#user").val()
+    var userName = $(".user-name").val()
     var userMessage = $("#m").val();
-    console.log(userMessage)
+
     var newUserMessage = {
       user: userName,
       message: userMessage
     }
-    console.log(newUserMessage);
 
     $.ajax("/api/chat", {
       type: "POST",
@@ -114,6 +119,7 @@ $(document).ready(function () {
       })
   });
 
+  // AJAX call that deletes messages
   $(".delete").on("click", function (event) {
     var id = $(this).data("id");
 
@@ -129,8 +135,7 @@ $(document).ready(function () {
     );
   });
 
-
-
+  // AJAX calls that updates a message
   $(".save").on("click", function (event) {
     var id = $(this).parent().data("id")
     var updateMsg = $(this).siblings("div").text()
@@ -150,26 +155,10 @@ $(document).ready(function () {
     );
   });
 
-  // function getMessages() {
-  //   $('#submit').on('click', function () {
-  //     console.log('Hello');
-
-
-
-  //     $.ajax("/api/chat",{
-  //       url: queryURL,
-  //       method: "PUT"
-  //     })
-  //       .then(function (response) {
-  //         console.log(response)
-  //       })
-  //   });
-  // };
-
   function poll() {
     setInterval(function () {
       $.ajax({
-        url: "http://localhost:8080/", type: "GET", success: function (data) {
+        url: "http://localhost:8080/allmessages", type: "GET", success: function (data) {
           //Setup the next poll recursively
           console.log("IM POLLING")
 
@@ -184,7 +173,7 @@ $(document).ready(function () {
           console.log(error)
         }
       });
-    }, 5000);
+    }, 8000);
   };
 
   poll();
