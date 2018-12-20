@@ -17,5 +17,5 @@ CREATE TABLE chats
     message varchar(280) NOT NULL,
     PRIMARY KEY(id),
     user varchar(280) NOT NUll,
-    foreign key(user) REFERENCES users(user_name)
+--     foreign key(user) REFERENCES users(user_name)
 );

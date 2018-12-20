@@ -28,7 +28,7 @@ function objToSql(ob) {
   console.log(arr)
   // translate array of strings to a single comma-separated string
   return arr.toString();
-  
+
 }
 var orm = {
   all: function (tableInput, cb) {
@@ -60,34 +60,34 @@ var orm = {
     })
 
   },
-update: function(table, objColVals, condition, cb){
+  update: function (table, objColVals, condition, cb) {
     console.log(objColVals)
-    var queryString = "UPDATE " + table; 
+    var queryString = "UPDATE " + table;
     queryString += " SET ";
     queryString += objToSql(objColVals);
-    queryString += " WHERE "; 
-    queryString += condition; 
+    queryString += " WHERE ";
+    queryString += condition;
 
-    console.log(queryString); 
-    connection.query(queryString, function(err, result){
-      if(err){
-        throw err; 
+    console.log(queryString);
+    connection.query(queryString, function (err, result) {
+      if (err) {
+        throw err;
       }
       cb(result);
     });
-},
-delete: function(table, condition, cb){
-  var queryString = "DELETE FROM " + table;
-  queryString += " WHERE ";
-  queryString += condition;
+  },
+  delete: function (table, condition, cb) {
+    var queryString = "DELETE FROM " + table;
+    queryString += " WHERE ";
+    queryString += condition;
 
-  connection.query(queryString, function(err, result){
-    if(err){
-      throw err; 
-    }
-    cb(result); 
-  }); 
-},
+    connection.query(queryString, function (err, result) {
+      if (err) {
+        throw err;
+      }
+      cb(result);
+    });
+  },
   selectWhere: function (tableInput, colToSearch, valOfCol, cb) {
     var queryString = "SELECT * FROM ?? WHERE ?? = ?";
     connection.query(queryString, [tableInput, colToSearch, valOfCol], function (err, result) {
@@ -101,7 +101,15 @@ delete: function(table, condition, cb){
       if (err) throw err;
       cb(err, result)
     });
-
+  },
+  //creates a new table
+  createTable: function (newTableName, cb) {
+    var queryString = "CREATE TABLE " + newTableName;
+    queryString += "( id int NOT NULL AUTO_INCREMENT, message varchar(280) NOT NULL, PRIMARY KEY(id), user varchar(280) NOT NUll);";
+    connection.query(queryString, [tableInput, cols_vals], function (err, result) {
+      if (err) throw err;
+      cb(err, result)
+    });
   }
 }
 

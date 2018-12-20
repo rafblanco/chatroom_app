@@ -5,8 +5,16 @@ var router = express.Router();
 var passport = require("../config/passport");
 var user = require("../model/users.js")
 var chat = require("../model/chat.js");
+var newChatRoom = require("../model/newChatRoom.js");
+
+
+router.post("/api/newchatroom", function (req, res) {
+    console.log("creating new chatroom...");
+    newChatRoom.createTable();
+});
 
 router.get("/allmessages", function (req, res) {
+    console.log('called allmessages(handlebars,messageobj)');
     chat.all(function (data) {
         var messageObj = {
             messages: data
@@ -19,7 +27,8 @@ router.get("/allmessages", function (req, res) {
 
 });
 // DOESN'T GET ANY USERS
-router.get("/allusers", function (req, res) {
+router.get("/api/getCurrentUser", function (req, res) {
+
     user.all(function (data) {
         var allUsers = {
             users: data
@@ -126,7 +135,7 @@ router.get("/api/user_data", function (req, res) {
         // Otherwise send back the username and id
         // Sending back a password, even a hashed password, isn't a good idea
         res.json({
-            user: req.user.user,
+            user: req.user.username,
             id: req.user.id
         });
     }

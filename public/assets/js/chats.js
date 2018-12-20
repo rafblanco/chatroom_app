@@ -73,11 +73,31 @@ $(document).ready(function () {
   //     console.log("Pressed ENTER")
   //   }
   // });
+  // $.ajax("/api/getCurrentUser", {
+  //   type: "GET"
+  // }).then(function (response) {
+  //   console.log('Getting User..')
+  //   var userNameLoggedIn = $(".user-name").text(response.username);
+  //   console.log(response.users[0].username);
+  // });
 
-  $.get("/api/user_data").then(function (data) {
-    //Move the username class in index to a better spot 
-    $(".user-name").text(data.username);
+  var userCurrentlyLoggedIn = "Not Logged In"
+
+  $.ajax("/api/user_data", {
+    type: "GET"
+  }).then(function (response) {
+    // var userNameLoggedIn = $(".user-name").text(response.username);
+    // console.log(response.users[0].username);
+    userCurrentlyLoggedIn = response.user;
+    console.log('User is: ')
+    console.log(response.user); 
+    $(".user-name").text(userCurrentlyLoggedIn);
   });
+
+    
+
+
+  
 
   $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
 
@@ -98,15 +118,15 @@ $(document).ready(function () {
   // AJAX calls that posts messages
   $('#submit').on('click', function () {
     event.preventDefault();
+    console.log('clicked on submit');
 
-    var userName = $(".user-name").val()
+    var userName = userCurrentlyLoggedIn
     var userMessage = $("#m").val();
-
     var newUserMessage = {
       user: userName,
       message: userMessage
     }
-
+    console.log(newUserMessage);
     $.ajax("/api/chat", {
       type: "POST",
       data: newUserMessage
