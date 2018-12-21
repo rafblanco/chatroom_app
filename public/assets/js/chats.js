@@ -81,6 +81,7 @@ $(document).ready(function () {
   //   console.log(response.users[0].username);
   // });
 
+
   var userCurrentlyLoggedIn = "Not Logged In"
 
   $.ajax("/api/user_data", {
@@ -94,7 +95,29 @@ $(document).ready(function () {
     $(".user-name").text(userCurrentlyLoggedIn);
   });
 
-    
+  
+  function runOnSubmit(){
+    event.preventDefault();
+    console.log('clicked on submit');
+
+    var userName = userCurrentlyLoggedIn
+    var userMessage = $("#m").val();
+    var newUserMessage = {
+      user: userName,
+      message: userMessage
+    }
+    console.log(newUserMessage);
+    $.ajax("/api/chat", {
+      type: "POST",
+      data: newUserMessage
+    })
+      .then(function (response) {
+        console.log(response)
+        console.log("Sent message: ", newUserMessage);
+        location.reload();
+        $("#messages").scrollTop = $("#messages").scrollHeight - $("#messages").clientHeight;
+      })
+  }
 
 
   
@@ -116,27 +139,16 @@ $(document).ready(function () {
   });
 
   // AJAX calls that posts messages
-  $('#submit').on('click', function () {
-    event.preventDefault();
-    console.log('clicked on submit');
-
-    var userName = userCurrentlyLoggedIn
-    var userMessage = $("#m").val();
-    var newUserMessage = {
-      user: userName,
-      message: userMessage
+  //clicks button on enter
+  $("#m").keydown(function(event){
+    //console.log("enter was pressed"); 
+    if (event.keyCode === 13){
+      runOnSubmit();
+      //$("#submit").click(); 
     }
-    console.log(newUserMessage);
-    $.ajax("/api/chat", {
-      type: "POST",
-      data: newUserMessage
-    })
-      .then(function (response) {
-        console.log(response)
-        console.log("Sent message: ", newUserMessage);
-        location.reload();
-        $("#messages").scrollTop = $("#messages").scrollHeight - $("#messages").clientHeight;
-      })
+  });
+  $('#submit').on('click', function () {
+    runOnSubmit();
   });
 
   // AJAX call that deletes messages
