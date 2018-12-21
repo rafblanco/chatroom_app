@@ -52,7 +52,7 @@
         <div id="messages" class="col-sm-8 p-4 border mb-2">
             <!-- new messages created will have class name 'messages' -->
             {{#each messages }}
-            <div class="messages alert alert-primary" data-user={{user}} data-id="{{id}}">{{user}}: <div class="text"
+            <div class="messages alert alert-primary namebolder" data-user={{user}} data-id="{{id}}">{{user}}: <div class="text"
                     data-id="{{id}}">{{message}}</div>
                     <button data-id="{{id}}" type="button" class="delete close">&times;</button>
                 <span data-id="{{id}}" type="button" class="edit border">edit</span>
