@@ -10,12 +10,12 @@ $(document).ready(function () {
     // console.log(response.users[0].username);
     userCurrentlyLoggedIn = response.user;
     console.log('User is: ')
-    console.log(response.user); 
+    console.log(response.user);
     $(".user-name").text(userCurrentlyLoggedIn);
   });
 
 
-  function runOnSubmit(){
+  function runOnSubmit() {
     event.preventDefault();
     console.log('clicked on submit');
 
@@ -36,29 +36,13 @@ $(document).ready(function () {
         location.reload();
         $("#messages").scrollTop = $("#messages").scrollHeight - $("#messages").clientHeight;
       })
-  }  
-
-  $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
-
-  $('.edit').click(function () {
-    $(this).hide();
-    $('.messages').addClass('editable');
-    $('.text').attr('contenteditable', 'true');
-    $('.save').show();
-  });
-
-  $('.save').click(function () {
-    $(this).hide();
-    $('.messages').removeClass('editable');
-    $('.text').removeAttr('contenteditable');
-    $('.edit').show();
-  });
+  }
 
   // AJAX calls that posts messages
   //clicks button on enter
-  $("#m").keydown(function(event){
+  $("#m").keydown(function (event) {
     //console.log("enter was pressed"); 
-    if (event.keyCode === 13){
+    if (event.keyCode === 13) {
       runOnSubmit();
       //$("#submit").click(); 
     }
@@ -67,47 +51,65 @@ $(document).ready(function () {
     runOnSubmit();
   });
 
-  // AJAX call that deletes messages
-  $(".delete").on("click", function (event) {
-    var id = $(this).data("id");
+  $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
+  function saveEditDelete() {
+    $('.edit').click(function () {
+      $(this).hide();
+      $('.messages').addClass('editable');
+      $('.text').attr('contenteditable', 'true');
+      $('.save').show();
+    });
 
-    // Send the DELETE request.
-    $.ajax("/api/chat/" + id, {
-      type: "DELETE"
-    }).then(
-      function () {
-        console.log("deleted chat", id);
-        // Reload the page to get the updated list
-        location.reload();
+    $('.save').click(function () {
+      $(this).hide();
+      $('.messages').removeClass('editable');
+      $('.text').removeAttr('contenteditable');
+      $('.edit').show();
+    });
+
+
+
+    // AJAX call that deletes messages
+    $(".delete").on("click", function (event) {
+      var id = $(this).data("id");
+
+      // Send the DELETE request.
+      $.ajax("/api/chat/" + id, {
+        type: "DELETE"
+      }).then(
+        function () {
+          console.log("deleted chat", id);
+          // Reload the page to get the updated list
+          location.reload();
+        }
+      );
+    });
+
+    // AJAX calls that updates a message
+    $(".save").on("click", function (event) {
+      var id = $(this).parent().data("id")
+      var updateMsg = $(this).siblings("div").text()
+
+      if (updateMsg === null || undefined || "") {
+        alert("Failed to update")
+
+      } else {
+        var newMsg = {
+          message: updateMsg
+        };
+
+        $.ajax("api/chat/" + id, {
+          type: "PUT",
+          data: newMsg
+        }).then(
+          function () {
+            console.log("update chat", id);
+            location.reload();
+          }
+        );
       }
-    );
-  });
-
-  // AJAX calls that updates a message
-  $(".save").on("click", function (event) {
-    var id = $(this).parent().data("id")
-    var updateMsg = $(this).siblings("div").text()
-    
-    if (updateMsg === null || undefined || ""){
-      alert("Failed to update")
-
-    } else {
-    var newMsg = {
-      message: updateMsg
-    };
-
-    $.ajax("api/chat/" + id, {
-      type: "PUT",
-      data: newMsg
-    }).then(
-      function () {
-        console.log("update chat", id);
-        location.reload();
-      }
-    );
-    }
-  });
-
+    });
+  }
   function poll() {
     setInterval(function () {
       $.ajax({
@@ -116,12 +118,13 @@ $(document).ready(function () {
           console.log("IM POLLING")
 
           console.log("IM POLLING 2")
-          
+
           $("#messages").replaceWith($(data).find("#messages"))
 
           var messages = $("#messages")[0];
+          saveEditDelete();
           messages.scrollTop = messages.scrollHeight - messages.clientHeight;
-        }, error: function (xhr,status, error) {
+        }, error: function (xhr, status, error) {
           console.log(status)
           console.log(error)
         }
@@ -130,5 +133,7 @@ $(document).ready(function () {
   };
 
   poll();
+  saveEditDelete(); 
 });
   // getMessages();
+
