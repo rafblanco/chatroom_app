@@ -1,87 +1,6 @@
 console.log('chats.js connected.')
 
 $(document).ready(function () {
-  // Run Modal 
-  // $.ajax("/allusers", {
-  //   type: "GET"
-  // }).then(function (response) {
-  //   for (var i = 0; i < response.users.length; i++) {
-  //     // console.log(i)
-  //     var eachUser = response.users[i].user_name;
-  //     console.log(eachUser)
-  //     var newDiv = $('<button type="button" class="col btn btn-primary user-chosen"></button>');
-  //     // <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
-  //     newDiv.attr('data-id', eachUser)
-  //     newDiv.text(eachUser)
-  //     // console.log(newDiv)
-  //     $('#all-users').append(newDiv)
-  //   }
-
-  //   changeUser();
-  // });
-
-  // var runModal = 'run';
-  // console.log('initial: ' + runModal);
-
-  // $(window).on('load', function () {
-  //   console.log('Connected to Webpage.')
-  //   if (runModal === 'run') {
-  //     $('#myModal').modal('show');
-  //     runModal = "don't run";
-  //     console.log('current: ' + runModal)
-  //   }
-  // });
-
-
-
-  // var changeUser = function () {
-  //   $('.user-chosen').on('click', function () {
-  //     var chosenUser = $(this).data('id');
-  //     console.log(chosenUser)
-  //     $("log-out").data(chosenUser);
-
-  //     // $.ajax("/api/chat", {
-  //     //   type: "POST"
-  //     // }).then(function (response) {
-  //     //   console.log(response);
-  //     //   location.reload()
-  //     // });
-
-  //     changeLoginName();
-  //   });
-  // }
-  // var changeLoginName = function () {
-  //   $('.user-chosen').on('click', function () {
-  //     var chosenUser = $(this).data('id');
-  //     console.log(chosenUser)
-
-  //     $('#logged-in').html(chosenUser);
-
-  //     // $.ajax("/api/chat", {
-  //     //   type: "POST"
-  //     // }). then(function(response){
-  //     //   console.log(response);
-  //     //   location.reload()
-  //     // });
-  //   })
-  // };
-
-  // $('#submit').keypress(function (e) {
-
-  //   var code = e.keyCode || e.which;
-  //   if (code == 13) { //Enter keycode
-  //     console.log("Pressed ENTER")
-  //   }
-  // });
-  // $.ajax("/api/getCurrentUser", {
-  //   type: "GET"
-  // }).then(function (response) {
-  //   console.log('Getting User..')
-  //   var userNameLoggedIn = $(".user-name").text(response.username);
-  //   console.log(response.users[0].username);
-  // });
-
-
   var userCurrentlyLoggedIn = "Not Logged In"
 
   $.ajax("/api/user_data", {
@@ -95,7 +14,7 @@ $(document).ready(function () {
     $(".user-name").text(userCurrentlyLoggedIn);
   });
 
-  
+
   function runOnSubmit(){
     event.preventDefault();
     console.log('clicked on submit');
@@ -117,10 +36,7 @@ $(document).ready(function () {
         location.reload();
         $("#messages").scrollTop = $("#messages").scrollHeight - $("#messages").clientHeight;
       })
-  }
-
-
-  
+  }  
 
   $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
 
@@ -172,6 +88,10 @@ $(document).ready(function () {
     var id = $(this).parent().data("id")
     var updateMsg = $(this).siblings("div").text()
     
+    if (updateMsg === null || undefined || ""){
+      alert("Failed to update")
+
+    } else {
     var newMsg = {
       message: updateMsg
     };
@@ -185,6 +105,7 @@ $(document).ready(function () {
         location.reload();
       }
     );
+    }
   });
 
   function poll() {
@@ -205,7 +126,7 @@ $(document).ready(function () {
           console.log(error)
         }
       });
-    }, 8000);
+    }, 15000);
   };
 
   poll();
