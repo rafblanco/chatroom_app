@@ -3,3 +3,7 @@ div#messages {
     height: 400px;
     overflow-y: scroll;
   }
+
+  .namebolder {
+    font-weight: bold
+  }
