@@ -50,9 +50,22 @@ $(document).ready(function () {
   $('#submit').on('click', function () {
     runOnSubmit();
   });
-
+  
   $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
+ 
   function saveEditDelete() {
+
+    var activeUser = $('.user-name').text() ;
+    console.log('ActiveUser: ' + activeUser)
+    // console.log(userCurrentlyLoggedIn);
+    if (userCurrentlyLoggedIn != activeUser)
+    {
+      $(".delete-edit-save").empty();
+    }
+    $('.edit').text('edit');
+    console.log('-_-_-_-_-_-')
+
+
     $('.edit').click(function () {
       $(this).hide();
       $('.messages').addClass('editable');
