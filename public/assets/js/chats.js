@@ -113,7 +113,7 @@ $(document).ready(function () {
   function poll() {
     setInterval(function () {
       $.ajax({
-        url: "http://localhost:8080/allmessages", type: "GET", success: function (data) {
+        url: "/allmessages", type: "GET", success: function (data) {
           //Setup the next poll recursively
           console.log("IM POLLING")
 
