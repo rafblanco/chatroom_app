@@ -7,13 +7,22 @@ var user = require("../model/users.js")
 var chat = require("../model/chat.js");
 var newChatRoom = require("../model/newChatRoom.js");
 
+// Requiring our custom middleware for checking if a user is logged in
+var isAuthenticated = function (req, res, next) {
+    if (req.user) {
+        return next();
+    }
+    // If the user isn't logged in, redirect them to the login page
+    return res.redirect("/");
+}
+
 
 router.post("/api/newchatroom", function (req, res) {
     console.log("creating new chatroom...");
     newChatRoom.createTable();
 });
 
-router.get("/allmessages", function (req, res) {
+router.get("/allmessages", isAuthenticated, function (req, res) {
     console.log('called allmessages(handlebars,messageobj)');
     chat.all(function (data) {
         var messageObj = {
@@ -21,7 +30,6 @@ router.get("/allmessages", function (req, res) {
         };
 
         // console.log(messageObj);
-        isAuthenticated;
         res.render("index", messageObj);
     });
 
@@ -141,17 +149,9 @@ router.get("/api/user_data", function (req, res) {
     }
 });
 
-// Requiring our custom middleware for checking if a user is logged in
-var isAuthenticated = function (req, res, next) {
-    if (req.user) {
-        return next();
-    }
-    // If the user isn't logged in, redirect them to the login page
-    return res.redirect("/");
-}
 
 
-router.get("/", function (req, res) {
+router.get("/signup", function (req, res) {
     // If the user already has an account send them to the messages page
     if (req.user) {
         res.redirect("/allmessages");
@@ -159,7 +159,7 @@ router.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "../public/signup.html"));
 });
 
-router.get("/login", function (req, res) {
+router.get("/", function (req, res) {
     // If the user already has an account send them to the messages page
     if (req.user) {
         res.redirect("/allmessages");
