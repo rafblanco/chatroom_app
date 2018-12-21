@@ -3,17 +3,22 @@ console.log('chats.js connected.')
 $(document).ready(function () {
   var userCurrentlyLoggedIn = "Not Logged In"
 
-  $.ajax("/api/user_data", {
-    type: "GET"
-  }).then(function (response) {
-    // var userNameLoggedIn = $(".user-name").text(response.username);
-    // console.log(response.users[0].username);
-    userCurrentlyLoggedIn = response.user;
-    console.log('User is: ')
-    console.log(response.user);
-    $(".user-name").text(userCurrentlyLoggedIn);
-  });
+  function getUser() {
+    $.ajax("/api/user_data", {
+      type: "GET"
+    }).then(function (response) {
+      userCurrentlyLoggedIn = response.user;
+      console.log('User is: ')
+      console.log(response.user);
+      $(".user-name").text(userCurrentlyLoggedIn);
 
+      $(".delete-edit-save").each(function () {
+        if ($(this).data("loggedin") != userCurrentlyLoggedIn) {
+          $(this).empty();
+        }
+      });
+    });
+  }
 
   function runOnSubmit() {
     event.preventDefault();
@@ -41,31 +46,21 @@ $(document).ready(function () {
   // AJAX calls that posts messages
   //clicks button on enter
   $("#m").keydown(function (event) {
-    //console.log("enter was pressed"); 
     if (event.keyCode === 13) {
       runOnSubmit();
-      //$("#submit").click(); 
     }
   });
+
   $('#submit').on('click', function () {
     runOnSubmit();
   });
-  
+
   $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
- 
+
+
   function saveEditDelete() {
 
-    var activeUser = $('.user-name').text() ;
-    console.log('ActiveUser: ' + activeUser)
-    // console.log(userCurrentlyLoggedIn);
-    if (userCurrentlyLoggedIn != activeUser)
-    {
-      $(".delete-edit-save").empty();
-    }
     $('.edit').text('edit');
-    console.log('-_-_-_-_-_-')
-
-
     $('.edit').click(function () {
       $(this).hide();
       $('.messages').addClass('editable');
@@ -135,6 +130,7 @@ $(document).ready(function () {
           $("#messages").replaceWith($(data).find("#messages"))
 
           var messages = $("#messages")[0];
+          getUser();
           saveEditDelete();
           messages.scrollTop = messages.scrollHeight - messages.clientHeight;
         }, error: function (xhr, status, error) {
@@ -142,11 +138,11 @@ $(document).ready(function () {
           console.log(error)
         }
       });
-    }, 15000);
+    }, 8000);
   };
-
+  getUser();
   poll();
-  saveEditDelete(); 
+  saveEditDelete();
 });
   // getMessages();
 
