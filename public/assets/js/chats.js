@@ -95,8 +95,8 @@ $(document).ready(function () {
 
     // AJAX calls that updates a message
     $(".save").on("click", function (event) {
-      var id = $(this).parent().data("id")
-      var updateMsg = $(this).siblings("div").text()
+      var id = $(this).parent().siblings(".text").data("id")
+      var updateMsg = $(this).parent().siblings(".text").text()
 
       if (updateMsg === null || undefined || "") {
         alert("Failed to update")
@@ -112,7 +112,11 @@ $(document).ready(function () {
         }).then(
           function () {
             console.log("update chat", id);
-            location.reload();
+            $("#messages").replaceWith($(data).find("#messages"))
+
+          var messages = $("#messages")[0];
+          messages.scrollTop = messages.scrollHeight - messages.clientHeight;
+
           }
         );
       }
@@ -132,6 +136,7 @@ $(document).ready(function () {
           var messages = $("#messages")[0];
           getUser();
           saveEditDelete();
+          $('.save').hide();
           messages.scrollTop = messages.scrollHeight - messages.clientHeight;
         }, error: function (xhr, status, error) {
           console.log(status)
@@ -143,6 +148,7 @@ $(document).ready(function () {
   getUser();
   poll();
   saveEditDelete();
+  $('.save').hide();
 });
   // getMessages();
 
