@@ -23,7 +23,7 @@ router.post("/api/newchatroom", function (req, res) {
 });
 
 router.get("/allmessages", isAuthenticated, function (req, res) {
-    console.log('called allmessages(handlebars,messageobj)');
+
     chat.all(function (data) {
         var messageObj = {
             messages: data
@@ -33,17 +33,6 @@ router.get("/allmessages", isAuthenticated, function (req, res) {
         res.render("index", messageObj);
     });
 
-});
-// DOESN'T GET ANY USERS
-router.get("/api/getCurrentUser", function (req, res) {
-
-    user.all(function (data) {
-        var allUsers = {
-            users: data
-        };
-        console.log(allUsers);
-        res.json(allUsers);
-    });
 });
 
 router.post("/api/chat", function (req, res) {

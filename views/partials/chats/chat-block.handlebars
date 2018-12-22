@@ -1,0 +1,10 @@
+            <div class="messages alert alert-primary" data-user={{user}} data-id="{{id}}">
+                <div class="namebolder bold">{{user}}:</div>
+                <div class="text" data-id="{{id}}">{{message}}</div>
+                
+                <div data-loggedin={{user}} class="delete-edit-save">
+                    <button data-id="{{id}}" type="button" class="delete close">&times;</button>
+                    <span data-id="{{id}}" type="button" class="edit border"></span>
+                    <span data-id="{{id}}" type="button" class="save border">save</span>
+                </div>
+            </div>

@@ -1,42 +1,13 @@
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel" style="text-align:center">Please Pick a User to Login</h5>
-            </div>
-            <p class="mx-auto">
-                {{#each user }}
-                <a href="#" role="button" class="p-1 btn btn-secondary user-chosen" title="title" data-id="{{user_name}}"
-                    data-dismiss="modal">{{user_name}} </a>
-                {{/each}}
-            </p>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- 1. Header -->
 <div class="container p-1">
     <div class="p-0 mb-4">
         <h1 class="display-4 mx-auto">Welcome to Chat App</h1>
-    </div>
-    <!-- Logins -->
-    <div id="all-users">
-        {{!-- <button type="button" data-id="Rafael" class="col btn btn-primary user">Rafael</button>
-        <button type="button" class="col btn btn-primary">Meili</button>
-        <button type="button" class="col btn btn-primary">Jake</button>
-        <button type="button" class="col btn btn-primary">Alejandro</button> --}}
     </div>
     <!-- 2.Chat Room buttoms -->
     <div id="chat-rooms" class="row p-0 mb-4">
         <!--Chat 1 is 'active'-->
         <button type="button" class="col btn btn-outline-primary btn-lg">Chat 1</button>
         <button type="button" class="col btn btn-outline-primary btn-lg">Chat 2</button>
-        <button type="button" class="col btn btn-outline-primary btn-lg">Chat 3</button>
-        <button type="button" class="col btn btn-outline-primary btn-lg">Chat 4</button>
     </div>
     <!-- 3. "Row with Login Info + Messages on the right" -->
     <div class="row">
@@ -45,23 +16,14 @@
             <div class="card-body">
                 <h5 class="card-title">Welcome to our chatroom, <span id="logged-in" class="user-name font-weight-bold"></span></h5>
                 <p class="card-text">This is a old school aim style chatroom.</p>
-                <a href="/logout" id="log-out" data-user="" class="btn btn-primary">Logout</a>
+                <a href="/logout" id="log-out" class="btn btn-primary">Logout</a>
             </div>
         </div>
         <!-- Messages (right) -->
         <div id="messages" class="col-sm-8 p-4 border mb-2">
             <!-- new messages created will have class name 'messages' -->
             {{#each messages }}
-            <div class="messages alert alert-primary" data-user={{user}} data-id="{{id}}">
-                <div class="namebolder">{{user}}:</div>
-                <div class="text" data-id="{{id}}">{{message}}</div>
-                <div data-loggedin={{user}} class="delete-edit-save">
-                    <button data-id="{{id}}" type="button" class="delete close">&times;</button>
-                    <span data-id="{{id}}" type="button" class="edit border"></span>
-                    <span data-id="{{id}}" type="button" class="save border">save</span>
-                </div>
-
-            </div>
+            {{> chats/chat-block}}
             {{/each}}
         </div>
     </div>
@@ -69,11 +31,10 @@
 <!-- Sticky Footer - Send Message -->
 <div>
     <form action="" class="footer p-2">
-        <div class="">
             <input id="m" autocomplete="off" class="col-sm-10 form-control" type="text" placeholder="Chat Here">
             <div class="col-sm-2">
                 <button type="button" id="submit" class="btn btn-primary">Send</button>
-            </div>
+
         </div>
     </form>
 </div>

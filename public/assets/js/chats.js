@@ -1,24 +1,34 @@
 console.log('chats.js connected.')
 
 $(document).ready(function () {
-  var userCurrentlyLoggedIn = "Not Logged In"
+  var userCurrentlyLoggedIn = "Not Logged In";
+
+  function updateUserMessageBubble() {
+    $(".messages").each(function () {
+      if ($(this).data("user") == userCurrentlyLoggedIn) {
+        $(this).removeClass("alert-primary").addClass("alert-secondary");
+      }
+    });
+
+    $(".delete-edit-save").each(function () {
+      if ($(this).data("loggedin") != userCurrentlyLoggedIn) {
+
+        $(this).empty();
+      }
+    });
+  }
 
   function getUser() {
     $.ajax("/api/user_data", {
       type: "GET"
     }).then(function (response) {
       userCurrentlyLoggedIn = response.user;
-      console.log('User is: ')
-      console.log(response.user);
+      console.log('User is: ' + userCurrentlyLoggedIn);
       $(".user-name").text(userCurrentlyLoggedIn);
-
-      $(".delete-edit-save").each(function () {
-        if ($(this).data("loggedin") != userCurrentlyLoggedIn) {
-          $(this).empty();
-        }
-      });
+      updateUserMessageBubble();
     });
   }
+
 
   function runOnSubmit() {
     event.preventDefault();
@@ -114,8 +124,9 @@ $(document).ready(function () {
             console.log("update chat", id);
             $("#messages").replaceWith($(data).find("#messages"))
 
-          var messages = $("#messages")[0];
-          messages.scrollTop = messages.scrollHeight - messages.clientHeight;
+            var messages = $("#messages")[0];
+            console.log('fasdfasd')
+            messages.scrollTop = messages.scrollHeight - messages.clientHeight;
 
           }
         );
@@ -127,9 +138,7 @@ $(document).ready(function () {
       $.ajax({
         url: "/allmessages", type: "GET", success: function (data) {
           //Setup the next poll recursively
-          console.log("IM POLLING")
-
-          console.log("IM POLLING 2")
+          console.log("IM POLLING");
 
           $("#messages").replaceWith($(data).find("#messages"))
 
@@ -145,10 +154,12 @@ $(document).ready(function () {
       });
     }, 8000);
   };
+
+  $('.save').hide();
   getUser();
   poll();
   saveEditDelete();
-  $('.save').hide();
+
 });
   // getMessages();
 
