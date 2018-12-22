@@ -65,7 +65,6 @@ $(document).ready(function () {
     runOnSubmit();
   });
 
-  $('#messages').animate({ scrollTop: document.body.scrollHeight }, "fast");
 
 
   function saveEditDelete() {
@@ -155,7 +154,10 @@ $(document).ready(function () {
     }, 8000);
   };
 
+  // Where all the action happens!!
   $('.save').hide();
+  var firstMessages = $("#messages")[0];
+  firstMessages.scrollTop = firstMessages.scrollHeight - firstMessages.clientHeight;
   getUser();
   poll();
   saveEditDelete();
